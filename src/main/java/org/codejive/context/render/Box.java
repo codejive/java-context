@@ -12,6 +12,10 @@ public class Box implements Rect {
     private final List<AttributedString> content;
     private final Style style;
 
+    public Box(List<AttributedString> content) {
+        this(content, new Style());
+    }
+
     public Box(List<AttributedString> content, Style style) {
         this.content = content;
         this.style = style;

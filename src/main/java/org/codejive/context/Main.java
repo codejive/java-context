@@ -23,62 +23,79 @@ import java.util.Arrays;
 import java.util.Random;
 
 public class Main {
+    private final Terminal terminal;
+
+    public Main(Terminal terminal) {
+        this.terminal = terminal;
+    }
 
     public static void main(String... args) throws IOException {
-        new Main().run();
+        try (Terminal terminal = TerminalBuilder.builder().build()) {
+            Attributes savedAttributes = terminal.enterRawMode();
+            try {
+                new Main(terminal).run();
+            } finally {
+                terminal.setAttributes(savedAttributes);
+            }
+        }
 //        System.out.println("The next line is a lie!");
 //        System.out.print(Ansi.ansi().cursorUpLine());
 //        System.out.println("This is a working test!");
     }
 
     public int run() throws IOException {
-        try (Terminal terminal = TerminalBuilder.builder().build()) {
-            Attributes savedAttributes = terminal.enterRawMode();
-            try {
-                Display display = new Display(terminal, false);
-                Size size = new Size();
-                size.copy(terminal.getSize());
+        Display display = new Display(terminal, false);
+        Size size = new Size();
+        size.copy(terminal.getSize());
 
-                int termWidth = size.getColumns();
-                int termHeight = size.getRows();
-                int displayHeight = 10;
-                display.resize(displayHeight, termWidth);
+        int termWidth = size.getColumns();
+        int termHeight = size.getRows();
+        int displayHeight = 10;
+        display.resize(displayHeight, termWidth);
 
-                int cols = terminal.getNumericCapability(Capability.max_colors);
-                while (true) {
-                    int col = (int) (Math.random() * (cols + 1));
-                    AttributedStringBuilder cb = new AttributedStringBuilder();
-                    cb.styled(cb.style().foreground(col), "012345678901234");
-                    AttributedString c = cb.toAttributedString();
-                    int minx = -16;
-                    int maxx = termWidth + 16;
-                    int miny = -6;
-                    int maxy = displayHeight + 6;
-                    int x = (int) (Math.random() * (maxx - minx + 1) + minx);
-                    int y = (int) (Math.random() * (maxy - miny + 1) + miny);
-                    Style s = new Style();
-                    s.put(Property.top, Value.length(y, Unit.em));
-                    s.put(Property.bottom, Value.length(y + 14, Unit.em));
-                    s.put(Property.left, Value.length(x, Unit.em));
-                    s.put(Property.right, Value.length(x + 4, Unit.em));
-                    s.put(Property.width, Value.length(15, Unit.em));
-                    s.put(Property.height, Value.length(5, Unit.em));
-                    Box b = new Box(Arrays.asList(c, c, c, c, c), s);
-                    Screen scr = new Screen(termWidth, displayHeight);
-                    BoxRenderer r = new BoxRenderer(scr);
-                    r.render(Arrays.asList(b));
-                    display.update(scr.lines(), 0);
-                    if (terminal.reader().read() == 'q') {
-                        break;
-                    }
-                    System.out.flush();
-                }
-
-                terminal.writer().flush();
-                return 0;
-            } finally {
-                terminal.setAttributes(savedAttributes);
+        while (true) {
+            Box b = createColoredBox();
+            setRandomPosSize(b.style(), termWidth, displayHeight, 15, 5);
+            Screen scr = new Screen(termWidth, displayHeight);
+            BoxRenderer r = new BoxRenderer(scr);
+            r.render(Arrays.asList(b));
+            display.update(scr.lines(), 0);
+            if (terminal.reader().read() == 'q') {
+                break;
             }
+            System.out.flush();
         }
+
+        terminal.writer().flush();
+        return 0;
+    }
+
+    private Box createColoredBox() {
+        int cols = terminal.getNumericCapability(Capability.max_colors);
+        int col = (int) (Math.random() * (cols + 1));
+        AttributedStringBuilder cb = new AttributedStringBuilder();
+        cb.styled(cb.style().foreground(col), "012345678901234");
+        AttributedString c = cb.toAttributedString();
+        Box b = new Box(Arrays.asList(c, c, c, c, c));
+        return b;
+    }
+
+    private static void setRandomPosSize(Style s, int totalW, int totalH, int w, int h) {
+        int minx = -16;
+        int maxx = totalW + 16;
+        int miny = -6;
+        int maxy = totalH + 6;
+        int x = (int) (Math.random() * (maxx - minx + 1) + minx);
+        int y = (int) (Math.random() * (maxy - miny + 1) + miny);
+        setPosSize(s, x, y, w, h);
+    }
+
+    private static void setPosSize(Style s, int x, int y, int w, int h) {
+        s.put(Property.top, Value.length(y, Unit.em));
+        s.put(Property.bottom, Value.length(y + w - 1, Unit.em));
+        s.put(Property.left, Value.length(x, Unit.em));
+        s.put(Property.right, Value.length(x + h - 1, Unit.em));
+        s.put(Property.width, Value.length(w, Unit.em));
+        s.put(Property.height, Value.length(h, Unit.em));
     }
 }
