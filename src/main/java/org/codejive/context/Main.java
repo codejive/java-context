@@ -13,6 +13,8 @@ import org.jline.terminal.Size;
 import org.jline.terminal.Terminal;
 import org.jline.terminal.TerminalBuilder;
 import org.jline.utils.AttributedString;
+import org.jline.utils.AttributedStringBuilder;
+import org.jline.utils.AttributedStyle;
 import org.jline.utils.Display;
 import org.jline.utils.InfoCmp.Capability;
 
@@ -42,8 +44,12 @@ public class Main {
                 int displayHeight = 10;
                 display.resize(displayHeight, termWidth);
 
-                AttributedString c = AttributedString.fromAnsi("012345678901234");
+                int cols = terminal.getNumericCapability(Capability.max_colors);
                 while (true) {
+                    int col = (int) (Math.random() * (cols + 1));
+                    AttributedStringBuilder cb = new AttributedStringBuilder();
+                    cb.styled(cb.style().foreground(col), "012345678901234");
+                    AttributedString c = cb.toAttributedString();
                     int minx = -16;
                     int maxx = termWidth + 16;
                     int miny = -6;
