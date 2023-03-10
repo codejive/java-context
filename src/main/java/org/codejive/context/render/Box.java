@@ -89,7 +89,7 @@ public class Box implements Rect {
         return propAsEmInt(Property.height);
     }
 
-    public int propAsEmInt(Property p) {
+    private int propAsEmInt(Property p) {
         return Math.round(style().get(p).as(Len.class).convert(Unit.em).get());
     }
 }
