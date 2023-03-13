@@ -1,14 +1,14 @@
 package org.codejive.context.styles;
 
-import java.util.Optional;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import static org.codejive.context.styles.Type.integer;
 import static org.codejive.context.styles.Type.length;
 import static org.codejive.context.styles.Type.number;
 import static org.codejive.context.styles.Type.percentage;
 import static org.codejive.context.styles.Type.string;
+
+import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public interface Value {
 
@@ -104,7 +104,8 @@ public interface Value {
     class Num implements Value {
         private final Float value;
 
-        private static final Pattern nump = Pattern.compile("[-+]?(0|[1-9][0-9]*)(\\.[0-9]+([eE][-+]?(0|[1-9][0-9]*))?)?");
+        private static final Pattern nump =
+                Pattern.compile("[-+]?(0|[1-9][0-9]*)(\\.[0-9]+([eE][-+]?(0|[1-9][0-9]*))?)?");
 
         private Num(Float value) {
             this.value = value;
@@ -175,7 +176,7 @@ public interface Value {
             if (this.unit == unit) {
                 return this;
             } else {
-                //TODO Implement!
+                // TODO Implement!
                 throw new RuntimeException("NYI");
             }
         }
@@ -184,7 +185,8 @@ public interface Value {
             Matcher m = lenp.matcher(v);
             if (m.matches()) {
                 Unit u = Unit.valueOf(m.group(1));
-                return Num.parse(v.substring(0, v.length() - u.name().length()).trim()).map(n -> new Len(n.get(), u));
+                return Num.parse(v.substring(0, v.length() - u.name().length()).trim())
+                        .map(n -> new Len(n.get(), u));
             }
             return Optional.empty();
         }

@@ -1,8 +1,7 @@
 package org.codejive.context.render;
 
-import org.jline.utils.AttributedString;
-
 import java.util.List;
+import org.jline.utils.AttributedString;
 
 public class BoxRenderer {
     private final Screen screen;

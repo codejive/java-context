@@ -1,12 +1,11 @@
 package org.codejive.context.render;
 
+import java.util.List;
 import org.codejive.context.styles.Property;
 import org.codejive.context.styles.Style;
 import org.codejive.context.styles.Unit;
 import org.codejive.context.styles.Value.Len;
 import org.jline.utils.AttributedString;
-
-import java.util.List;
 
 public class Box implements Rect {
     private final List<AttributedString> content;
@@ -30,8 +29,8 @@ public class Box implements Rect {
     }
 
     /**
-     * Returns top position as a quantity of <code>Unit.em</code>
-     * rounded to the nearest integer.
+     * Returns top position as a quantity of <code>Unit.em</code> rounded to the nearest integer.
+     *
      * @return top position in em
      */
     @Override
@@ -40,8 +39,8 @@ public class Box implements Rect {
     }
 
     /**
-     * Returns bottom position as a quantity of <code>Unit.em</code>
-     * rounded to the nearest integer.
+     * Returns bottom position as a quantity of <code>Unit.em</code> rounded to the nearest integer.
+     *
      * @return bottom position in em
      */
     @Override
@@ -50,8 +49,8 @@ public class Box implements Rect {
     }
 
     /**
-     * Returns left position as a quantity of <code>Unit.em</code>
-     * rounded to the nearest integer.
+     * Returns left position as a quantity of <code>Unit.em</code> rounded to the nearest integer.
+     *
      * @return left position in em
      */
     @Override
@@ -60,8 +59,8 @@ public class Box implements Rect {
     }
 
     /**
-     * Returns right position as a quantity of <code>Unit.em</code>
-     * rounded to the nearest integer.
+     * Returns right position as a quantity of <code>Unit.em</code> rounded to the nearest integer.
+     *
      * @return right position in em
      */
     @Override
@@ -70,8 +69,8 @@ public class Box implements Rect {
     }
 
     /**
-     * Returns width as a quantity of <code>Unit.em</code>
-     * rounded to the nearest integer.
+     * Returns width as a quantity of <code>Unit.em</code> rounded to the nearest integer.
+     *
      * @return width in em
      */
     @Override
@@ -80,8 +79,8 @@ public class Box implements Rect {
     }
 
     /**
-     * Returns height as a quantity of <code>Unit.em</code>
-     * rounded to the nearest integer.
+     * Returns height as a quantity of <code>Unit.em</code> rounded to the nearest integer.
+     *
      * @return height in em
      */
     @Override

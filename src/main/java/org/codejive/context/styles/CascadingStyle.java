@@ -44,9 +44,9 @@ public class CascadingStyle extends Style {
     }
 
     /**
-     * This flattens the cascading style hierarchy into a single
-     * <code>Style</code> object that takes into account cascading,
-     * inheritance and initial values.
+     * This flattens the cascading style hierarchy into a single <code>Style</code> object that
+     * takes into account cascading, inheritance and initial values.
+     *
      * @return A <code>Style</code> object
      */
     public Style specifiedStyle() {

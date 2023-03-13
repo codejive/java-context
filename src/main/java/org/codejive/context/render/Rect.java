@@ -38,11 +38,17 @@ public interface Rect {
     }
 
     default boolean outside(Rect other) {
-        return top() > other.bottom() || bottom() < other.top() || left() > other.right() || right() < other.left();
+        return top() > other.bottom()
+                || bottom() < other.top()
+                || left() > other.right()
+                || right() < other.left();
     }
 
     default boolean inside(Rect other) {
-        return top() >= other.top() && left() >= other.left() && bottom() <= other.bottom() && right() <= other.right();
+        return top() >= other.top()
+                && left() >= other.left()
+                && bottom() <= other.bottom()
+                && right() <= other.right();
     }
 
     default boolean overlap(Rect other) {

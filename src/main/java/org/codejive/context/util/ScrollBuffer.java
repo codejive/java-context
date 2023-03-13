@@ -1,15 +1,13 @@
 package org.codejive.context.util;
 
+import java.util.Arrays;
 import org.jline.utils.AttributedString;
 import org.jline.utils.AttributedStringBuilder;
 
-import java.util.Arrays;
-
 /**
- * Provides an appendable buffer of lines with a fixed size.
- * New lines that get added will push existing lines "upward".
- * Once the buffer is full new lines will push the oldest lines
- * out of the buffer.
+ * Provides an appendable buffer of lines with a fixed size. New lines that get added will push
+ * existing lines "upward". Once the buffer is full new lines will push the oldest lines out of the
+ * buffer.
  */
 public class ScrollBuffer implements Appendable {
     private AttributedString[] history = new AttributedString[0];
@@ -34,7 +32,7 @@ public class ScrollBuffer implements Appendable {
             // The buffer only grows, we never shrink it
             int oldlen = history.length;
             history = Arrays.copyOf(history, historySize - 1);
-            for (int i=oldlen; i < history.length; i++) {
+            for (int i = oldlen; i < history.length; i++) {
                 history[i] = new AttributedString("");
             }
         }
@@ -64,7 +62,7 @@ public class ScrollBuffer implements Appendable {
     public AttributedString[] getLines() {
         int n = getHistorySize();
         AttributedString[] result = new AttributedString[n];
-        for (int i=0; i < n - 1; i++) {
+        for (int i = 0; i < n - 1; i++) {
             result[i] = history[n - i - 2];
         }
         result[n - 1] = lastLine.toAttributedString();
@@ -89,7 +87,7 @@ public class ScrollBuffer implements Appendable {
             // According to Appendable
             csq = "null";
         }
-        for (int i=0; i<csq.length(); i++) {
+        for (int i = 0; i < csq.length(); i++) {
             append(csq.charAt(i));
         }
         return this;
@@ -101,7 +99,7 @@ public class ScrollBuffer implements Appendable {
             // According to Appendable
             return append(csq);
         }
-        for (int i=start; i<end; i++) {
+        for (int i = start; i < end; i++) {
             append(csq.charAt(i));
         }
         return this;

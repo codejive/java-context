@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.Set;
 
 public class Style {
-    protected final Map<Property, Value> propVals =  new HashMap<>();
+    protected final Map<Property, Value> propVals = new HashMap<>();
 
     public Value get(String p) {
         return propVals.get(Property.valueOf(p));

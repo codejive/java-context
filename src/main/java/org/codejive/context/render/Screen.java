@@ -1,12 +1,11 @@
 package org.codejive.context.render;
 
-import org.jline.utils.AttributedCharSequence;
-import org.jline.utils.AttributedString;
-import org.jline.utils.AttributedStringBuilder;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.jline.utils.AttributedCharSequence;
+import org.jline.utils.AttributedString;
+import org.jline.utils.AttributedStringBuilder;
 
 public class Screen implements Rect.Wrapped {
     private final AttributedStringBuilder[] lines;
@@ -20,7 +19,7 @@ public class Screen implements Rect.Wrapped {
     public Screen(int width, int height) {
         this.rect = Rect.sized(width, height);
         lines = new AttributedStringBuilder[height];
-        for (int i=0; i<height; i++) {
+        for (int i = 0; i < height; i++) {
             lines[i] = new AttributedStringBuilder(width);
         }
     }
@@ -56,12 +55,14 @@ public class Screen implements Rect.Wrapped {
     }
 
     private static void pad(AttributedStringBuilder str, char c, int n) {
-        for (int i=0; i<n; i++) {
+        for (int i = 0; i < n; i++) {
             str.append(c);
         }
     }
 
     public List<AttributedString> lines() {
-        return Arrays.stream(lines).map(AttributedCharSequence::toAttributedString).collect(Collectors.toList());
+        return Arrays.stream(lines)
+                .map(AttributedCharSequence::toAttributedString)
+                .collect(Collectors.toList());
     }
 }
