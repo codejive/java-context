@@ -1,15 +1,20 @@
 package org.codejive.context.styles;
 
 public enum Type {
+    color,
     integer,
     length,
     number,
     percentage,
     string,
+    AUTO("auto"),
+    HIDDEN("hidden"),
     INHERIT("inherit"),
     INITIAL("initial"),
-    UNSET("unset"),
-    AUTO("auto");
+    NONE("none"),
+    REVERT("revert"),
+    SOLID("solid"),
+    UNSET("unset");
 
     String literal;
 

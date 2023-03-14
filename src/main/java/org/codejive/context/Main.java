@@ -3,6 +3,7 @@ package org.codejive.context;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.Arrays;
+import org.codejive.context.render.BorderRenderer;
 import org.codejive.context.render.Box;
 import org.codejive.context.render.BoxRenderer;
 import org.codejive.context.render.Screen;
@@ -45,10 +46,12 @@ public class Main {
         Display display = new Display(terminal, false);
         Size size = new Size();
         size.copy(terminal.getSize());
-
+        if (size.getColumns() == 0 && size.getRows() == 0) {
+            size = new Size(80, 40);
+        }
         int termWidth = size.getColumns();
         int termHeight = size.getRows();
-        int displayHeight = 10;
+        int displayHeight = 20;
         display.resize(displayHeight, termWidth);
 
         Box b1 = null, b2 = null, b3 = null, b4 = null;
@@ -69,8 +72,12 @@ public class Main {
                 refresh = false;
             }
             Screen scr = new Screen(termWidth, displayHeight);
-            BoxRenderer r = new BoxRenderer(scr);
-            r.render(Arrays.asList(b1, b2, b3, b4));
+            BorderRenderer br = new BorderRenderer(scr);
+            BoxRenderer boxr = new BoxRenderer(scr);
+            for (Box b : Arrays.asList(b1, b2, b3, b4)) {
+                br.render(b);
+                boxr.render(b);
+            }
             display.update(scr.lines(), 0);
             int c = terminal.reader().read(100);
             if (c == 'q') {
@@ -92,13 +99,20 @@ public class Main {
     }
 
     private Box createColoredBox() {
-        int cols = terminal.getNumericCapability(Capability.max_colors);
-        int col = (int) (Math.random() * (cols + 1));
         AttributedStringBuilder cb = new AttributedStringBuilder();
-        cb.styled(cb.style().foreground(col), "012345678901234");
+
+        Integer cols = terminal.getNumericCapability(Capability.max_colors);
+        if (cols != null) {
+            int col = (int) (Math.random() * (cols + 1));
+            cb.styled(cb.style().foreground(col), "012345678901234");
+        } else {
+            cb.append("012345678901234");
+        }
+
         AttributedString c = cb.toAttributedString();
         Box b = new Box(Arrays.asList(c, c, c, c, c));
         setSize(b, 15, 5);
+        setBorderWidth(b, 1);
         return b;
     }
 
@@ -108,12 +122,14 @@ public class Main {
         AttributedString c = cb.toAttributedString();
         Box b = new Box(Arrays.asList(c), s);
         setSize(b, 15, 1);
+        setBorderWidth(b, 1);
         return b;
     }
 
     private Box createScrollBox(Style s, ScrollBuffer sb) {
         Box b = new Box(Arrays.asList(sb.getLines()), s);
         setSize(b, 30, 5);
+        setBorderWidth(b, 1);
         return b;
     }
 
@@ -143,5 +159,9 @@ public class Main {
         s.put(Property.right, Value.length(x + h - 1, Unit.em));
         s.put(Property.width, Value.length(w, Unit.em));
         s.put(Property.height, Value.length(h, Unit.em));
+    }
+
+    private static void setBorderWidth(Box b, int w) {
+        b.style().put(Property.border_width, Value.length(w, Unit.em));
     }
 }

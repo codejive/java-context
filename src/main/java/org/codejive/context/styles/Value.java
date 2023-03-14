@@ -64,6 +64,9 @@ public interface Value {
             result = Pct.parse(v);
         }
         if (!result.isPresent()) {
+            result = Col.parse(v);
+        }
+        if (!result.isPresent()) {
             result = Len.parse(v);
         }
         if (!result.isPresent()) {
@@ -93,7 +96,7 @@ public interface Value {
             return integer;
         }
 
-        public static Optional<Int> parse(String v) {
+        public static Optional<? extends Int> parse(String v) {
             if (intp.matcher(v).matches()) {
                 return Optional.of(new Int(Integer.valueOf(v)));
             }
@@ -236,6 +239,27 @@ public interface Value {
             } catch (IllegalArgumentException ex) {
                 return Optional.empty();
             }
+        }
+    }
+
+    class Col extends Int {
+        private static final Pattern colp =
+                Pattern.compile("#([0-9a-fA-F]|[0-9a-fA-F]{2}|[0-9a-fA-F]{6})");
+
+        private Col(Integer value) {
+            super(value);
+        }
+
+        @Override
+        public Type type() {
+            return percentage;
+        }
+
+        public static Optional<Col> parse(String v) {
+            if (colp.matcher(v).matches()) {
+                return Int.parse(v.substring(1).trim()).map(n -> new Col(n.get()));
+            }
+            return Optional.empty();
         }
     }
 }

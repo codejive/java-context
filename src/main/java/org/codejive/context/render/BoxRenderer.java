@@ -1,6 +1,5 @@
 package org.codejive.context.render;
 
-import java.util.List;
 import org.jline.utils.AttributedString;
 
 public class BoxRenderer {
@@ -10,14 +9,8 @@ public class BoxRenderer {
         this.screen = screen;
     }
 
-    public void render(List<Box> boxes) {
-        for (Box b : boxes) {
-            renderBox(b);
-        }
-    }
-
-    private void renderBox(Box box) {
-        if (box.outside(screen)) {
+    public void render(Box box) {
+        if (box.rect().outside(screen.rect())) {
             return;
         }
         int x = box.left();

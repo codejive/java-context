@@ -7,7 +7,7 @@ import org.jline.utils.AttributedCharSequence;
 import org.jline.utils.AttributedString;
 import org.jline.utils.AttributedStringBuilder;
 
-public class Screen implements Rect.Wrapped {
+public class Screen implements RectLike {
     private final AttributedStringBuilder[] lines;
     private final Rect rect;
 
@@ -17,7 +17,7 @@ public class Screen implements Rect.Wrapped {
     }
 
     public Screen(int width, int height) {
-        this.rect = Rect.sized(width, height);
+        this.rect = new Rect(0, 0, width, height);
         lines = new AttributedStringBuilder[height];
         for (int i = 0; i < height; i++) {
             lines[i] = new AttributedStringBuilder(width);
@@ -25,19 +25,19 @@ public class Screen implements Rect.Wrapped {
     }
 
     public void printAt(int x, int y, AttributedString str) {
-        if (y < top() || y > bottom()) {
+        if (y < rect().top() || y > rect().bottom()) {
             return;
         }
         AttributedStringBuilder line = lines[y];
-        if (x > right() || (x + str.length() - 1) < left()) {
+        if (x > rect().right() || (x + str.length() - 1) < rect().left()) {
             return;
         }
-        if (x < left()) {
-            str = str.substring(left() - x, str.length());
-            x = left();
+        if (x < rect().left()) {
+            str = str.substring(rect().left() - x, str.length());
+            x = rect().left();
         }
-        if ((x + str.length() - 1) > right()) {
-            str = str.substring(0, right() - x + 1);
+        if ((x + str.length() - 1) > rect().right()) {
+            str = str.substring(0, rect().right() - x + 1);
         }
         if (line.length() < x) {
             pad(line, ' ', x - line.length());

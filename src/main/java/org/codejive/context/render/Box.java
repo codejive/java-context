@@ -3,11 +3,9 @@ package org.codejive.context.render;
 import java.util.List;
 import org.codejive.context.styles.Property;
 import org.codejive.context.styles.Style;
-import org.codejive.context.styles.Unit;
-import org.codejive.context.styles.Value.Len;
 import org.jline.utils.AttributedString;
 
-public class Box implements Rect {
+public class Box implements RectLike {
     private final List<AttributedString> content;
     private final Style style;
 
@@ -33,9 +31,8 @@ public class Box implements Rect {
      *
      * @return top position in em
      */
-    @Override
     public int top() {
-        return propAsEmInt(Property.top);
+        return style().getAsEmInt(Property.top);
     }
 
     /**
@@ -43,9 +40,8 @@ public class Box implements Rect {
      *
      * @return bottom position in em
      */
-    @Override
     public int bottom() {
-        return propAsEmInt(Property.bottom);
+        return style().getAsEmInt(Property.bottom);
     }
 
     /**
@@ -53,9 +49,8 @@ public class Box implements Rect {
      *
      * @return left position in em
      */
-    @Override
     public int left() {
-        return propAsEmInt(Property.left);
+        return style().getAsEmInt(Property.left);
     }
 
     /**
@@ -63,9 +58,8 @@ public class Box implements Rect {
      *
      * @return right position in em
      */
-    @Override
     public int right() {
-        return propAsEmInt(Property.right);
+        return style().getAsEmInt(Property.right);
     }
 
     /**
@@ -73,9 +67,8 @@ public class Box implements Rect {
      *
      * @return width in em
      */
-    @Override
     public int width() {
-        return propAsEmInt(Property.width);
+        return style().getAsEmPosInt(Property.width);
     }
 
     /**
@@ -83,12 +76,55 @@ public class Box implements Rect {
      *
      * @return height in em
      */
-    @Override
     public int height() {
-        return propAsEmInt(Property.height);
+        return style().getAsEmPosInt(Property.height);
     }
 
-    private int propAsEmInt(Property p) {
-        return Math.round(style().get(p).as(Len.class).convert(Unit.em).get());
+    @Override
+    public Rect rect() {
+        return new Rect(left(), top(), width(), height());
+    }
+
+    /**
+     * Returns border width for the top as a positive quantity of <code>Unit.em</code> rounded to
+     * the nearest integer and max value of 1.
+     *
+     * @return width in em
+     */
+    public int border_top_width() {
+        return style().getAsEmPosInt(style().get(Property.border_top_width, Property.border_width));
+    }
+
+    /**
+     * Returns border width for the bottom as a positive quantity of <code>Unit.em</code> rounded to
+     * the nearest integer and max value of 1.
+     *
+     * @return width in em
+     */
+    public int border_bottom_width() {
+        return style().getAsEmPosInt(
+                        style().get(Property.border_bottom_width, Property.border_width));
+    }
+
+    /**
+     * Returns border width for the left as a positive quantity of <code>Unit.em</code> rounded to
+     * the nearest integer and max value of 1.
+     *
+     * @return width in em
+     */
+    public int border_left_width() {
+        return style().getAsEmPosInt(
+                        style().get(Property.border_left_width, Property.border_width));
+    }
+
+    /**
+     * Returns border width for the right as a positive quantity of <code>Unit.em</code> rounded to
+     * the nearest integer and max value of 1.
+     *
+     * @return width in em
+     */
+    public int border_right_width() {
+        return style().getAsEmPosInt(
+                        style().get(Property.border_right_width, Property.border_width));
     }
 }
