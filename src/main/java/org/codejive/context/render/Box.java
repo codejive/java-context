@@ -92,7 +92,7 @@ public class Box implements RectLike {
      * @return width in em
      */
     public int border_top_width() {
-        return style().getAsEmPosInt(style().get(Property.border_top_width, Property.border_width));
+        return style().asEmPosInt(style().get(Property.border_top_width, Property.border_width));
     }
 
     /**
@@ -102,8 +102,7 @@ public class Box implements RectLike {
      * @return width in em
      */
     public int border_bottom_width() {
-        return style().getAsEmPosInt(
-                        style().get(Property.border_bottom_width, Property.border_width));
+        return style().asEmPosInt(style().get(Property.border_bottom_width, Property.border_width));
     }
 
     /**
@@ -113,8 +112,7 @@ public class Box implements RectLike {
      * @return width in em
      */
     public int border_left_width() {
-        return style().getAsEmPosInt(
-                        style().get(Property.border_left_width, Property.border_width));
+        return style().asEmPosInt(style().get(Property.border_left_width, Property.border_width));
     }
 
     /**
@@ -124,7 +122,6 @@ public class Box implements RectLike {
      * @return width in em
      */
     public int border_right_width() {
-        return style().getAsEmPosInt(
-                        style().get(Property.border_right_width, Property.border_width));
+        return style().asEmPosInt(style().get(Property.border_right_width, Property.border_width));
     }
 }

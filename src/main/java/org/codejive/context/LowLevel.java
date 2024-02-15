@@ -21,10 +21,10 @@ import org.jline.utils.AttributedStringBuilder;
 import org.jline.utils.Display;
 import org.jline.utils.InfoCmp.Capability;
 
-public class Main {
+public class LowLevel {
     private final Terminal terminal;
 
-    public Main(Terminal terminal) {
+    public LowLevel(Terminal terminal) {
         this.terminal = terminal;
     }
 
@@ -32,7 +32,7 @@ public class Main {
         try (Terminal terminal = TerminalBuilder.builder().build()) {
             Attributes savedAttributes = terminal.enterRawMode();
             try {
-                new Main(terminal).run();
+                new LowLevel(terminal).run();
             } finally {
                 terminal.setAttributes(savedAttributes);
             }

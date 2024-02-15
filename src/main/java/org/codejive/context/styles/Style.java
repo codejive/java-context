@@ -26,41 +26,53 @@ public class Style {
     }
 
     public int getAsEmInt(String p) {
-        return getAsEmInt(get(p));
+        return asEmInt(get(p));
     }
 
     public int getAsEmInt(Property p) {
-        return getAsEmInt(get(p));
+        return asEmInt(get(p));
     }
 
-    public int getAsEmInt(Value v) {
+    private int asEmInt(Value v) {
         return Math.round(v.as(Value.Len.class).convert(Unit.em).get());
     }
 
     public int getAsEmPosInt(String p) {
-        return getAsEmPosInt(get(p));
+        return asEmPosInt(get(p));
     }
 
     public int getAsEmPosInt(Property p) {
-        return getAsEmPosInt(get(p));
+        return asEmPosInt(get(p));
     }
 
-    public int getAsEmPosInt(Value v) {
+    public int asEmPosInt(Value v) {
         return Math.max(Math.round(v.as(Value.Len.class).convert(Unit.em).get()), 0);
     }
 
-    public Value put(String ps, String vs) {
+    public Style putAsEmInt(Property p, int v) {
+        return put(p, Value.length(v, Unit.em));
+    }
+
+    public Style put(String ps, String vs) {
         Property p = Property.valueOf(ps);
         Value v = Value.parse(vs).orElse(null);
         return put(p, v);
     }
 
-    public Value put(Property p, Value v) {
+    public Style put(Property p, Value v) {
         if (v != null) {
-            return propVals.put(p, v);
+            propVals.put(p, v);
         } else {
-            return propVals.remove(p);
+            propVals.remove(p);
         }
+        return this;
+    }
+
+    public Style and(Style... styles) {
+        for (Style s : styles) {
+            propVals.putAll(s.propVals);
+        }
+        return this;
     }
 
     public Set<Property> properties() {
