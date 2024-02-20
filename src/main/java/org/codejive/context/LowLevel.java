@@ -6,53 +6,33 @@ import java.util.Arrays;
 import org.codejive.context.render.BorderRenderer;
 import org.codejive.context.render.Box;
 import org.codejive.context.render.BoxRenderer;
-import org.codejive.context.render.Screen;
 import org.codejive.context.styles.Property;
 import org.codejive.context.styles.Style;
 import org.codejive.context.styles.Unit;
 import org.codejive.context.styles.Value;
+import org.codejive.context.terminal.Screen;
+import org.codejive.context.terminal.Term;
 import org.codejive.context.util.ScrollBuffer;
-import org.jline.terminal.Attributes;
-import org.jline.terminal.Size;
-import org.jline.terminal.Terminal;
-import org.jline.terminal.TerminalBuilder;
 import org.jline.utils.AttributedString;
 import org.jline.utils.AttributedStringBuilder;
-import org.jline.utils.Display;
-import org.jline.utils.InfoCmp.Capability;
 
 public class LowLevel {
-    private final Terminal terminal;
+    private final Term term;
 
-    public LowLevel(Terminal terminal) {
-        this.terminal = terminal;
+    public LowLevel(Term term) {
+        this.term = term;
     }
 
     public static void main(String... args) throws IOException {
-        try (Terminal terminal = TerminalBuilder.builder().build()) {
-            Attributes savedAttributes = terminal.enterRawMode();
-            try {
-                new LowLevel(terminal).run();
-            } finally {
-                terminal.setAttributes(savedAttributes);
-            }
+        try (Term terminal = Term.create()) {
+            new LowLevel(terminal).run();
         }
-        //        System.out.println("The next line is a lie!");
-        //        System.out.print(Ansi.ansi().cursorUpLine());
-        //        System.out.println("This is a working test!");
     }
 
     public int run() throws IOException {
-        Display display = new Display(terminal, false);
-        Size size = new Size();
-        size.copy(terminal.getSize());
-        if (size.getColumns() == 0 && size.getRows() == 0) {
-            size = new Size(80, 40);
-        }
-        int termWidth = size.getColumns();
-        int termHeight = size.getRows();
-        int displayHeight = 20;
-        display.resize(displayHeight, termWidth);
+        Screen screen = term.fullScreen();
+        int displayWidth = screen.rect().width();
+        int displayHeight = screen.rect().height();
 
         Box b1 = null, b2 = null, b3 = null, b4 = null;
         ScrollBuffer sb4 = new ScrollBuffer(5, 30, true);
@@ -62,24 +42,23 @@ public class LowLevel {
         while (true) {
             if (refresh) {
                 b1 = createColoredBox();
-                setRandomPosSize(b1, termWidth, displayHeight);
+                setRandomPosSize(b1, displayWidth, displayHeight);
                 b2 = createTimerBox(new Style());
-                setRandomPosSize(b2, termWidth, displayHeight);
+                setRandomPosSize(b2, displayWidth, displayHeight);
                 b3 = createColoredBox();
-                setRandomPosSize(b3, termWidth, displayHeight);
+                setRandomPosSize(b3, displayWidth, displayHeight);
                 b4 = createScrollBox(new Style(), sb4);
-                setRandomPosSize(b4, termWidth, displayHeight);
+                setRandomPosSize(b4, displayWidth, displayHeight);
                 refresh = false;
             }
-            Screen scr = new Screen(termWidth, displayHeight);
-            BorderRenderer br = new BorderRenderer(scr);
-            BoxRenderer boxr = new BoxRenderer(scr);
+            BorderRenderer br = new BorderRenderer(screen);
+            BoxRenderer boxr = new BoxRenderer(screen);
             for (Box b : Arrays.asList(b1, b2, b3, b4)) {
                 br.render(b);
                 boxr.render(b);
             }
-            display.update(scr.lines(), 0);
-            int c = terminal.reader().read(100);
+            screen.update();
+            int c = term.input().readChar(100);
             if (c == 'q') {
                 break out;
             } else if (c != -2) {
@@ -94,14 +73,14 @@ public class LowLevel {
             cnt++;
         }
 
-        terminal.writer().flush();
+        term.flush();
         return 0;
     }
 
     private Box createColoredBox() {
         AttributedStringBuilder cb = new AttributedStringBuilder();
 
-        Integer cols = terminal.getNumericCapability(Capability.max_colors);
+        Integer cols = term.maxColors();
         if (cols != null) {
             int col = (int) (Math.random() * (cols + 1));
             cb.styled(cb.style().foreground(col), "012345678901234");

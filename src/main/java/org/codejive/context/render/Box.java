@@ -3,9 +3,11 @@ package org.codejive.context.render;
 import java.util.List;
 import org.codejive.context.styles.Property;
 import org.codejive.context.styles.Style;
+import org.codejive.context.terminal.Rect;
+import org.codejive.context.terminal.Rectangular;
 import org.jline.utils.AttributedString;
 
-public class Box implements RectLike {
+public class Box implements Rectangular {
     private final List<AttributedString> content;
     private final Style style;
 

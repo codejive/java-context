@@ -1,13 +1,12 @@
-package org.codejive.context.render;
+package org.codejive.context.terminal;
 
-class Rect {
-    private final int left, top, width, height;
+public class Rect extends Size {
+    private final int left, top;
 
-    Rect(int left, int top, int width, int height) {
+    public Rect(int left, int top, int width, int height) {
+        super(width, height);
         this.left = left;
         this.top = top;
-        this.width = width;
-        this.height = height;
     }
 
     public int left() {
@@ -15,7 +14,7 @@ class Rect {
     }
 
     public int right() {
-        return left + width - 1;
+        return left + width() - 1;
     }
 
     public int top() {
@@ -23,15 +22,7 @@ class Rect {
     }
 
     public int bottom() {
-        return top + height - 1;
-    }
-
-    public int width() {
-        return width;
-    }
-
-    public int height() {
-        return height;
+        return top + height() - 1;
     }
 
     public boolean outside(Rect other) {
@@ -56,8 +47,8 @@ class Rect {
         return new Rect(
                 left - leftAmount,
                 top - topAmount,
-                Math.max(width + leftAmount + rightAmount, 0),
-                Math.max(height + topAmount + bottomAmount, 0));
+                Math.max(width() + leftAmount + rightAmount, 0),
+                Math.max(height() + topAmount + bottomAmount, 0));
     }
 
     @Override
@@ -68,9 +59,9 @@ class Rect {
                 + ", top="
                 + top
                 + ", width="
-                + width
+                + width()
                 + ", height="
-                + height
+                + height()
                 + '}';
     }
 }

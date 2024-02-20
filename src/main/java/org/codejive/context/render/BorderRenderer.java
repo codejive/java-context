@@ -1,5 +1,7 @@
 package org.codejive.context.render;
 
+import org.codejive.context.terminal.Rect;
+import org.codejive.context.terminal.Screen;
 import org.codejive.context.util.Util;
 import org.jline.utils.AttributedString;
 

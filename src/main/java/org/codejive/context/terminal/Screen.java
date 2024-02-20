@@ -1,4 +1,4 @@
-package org.codejive.context.render;
+package org.codejive.context.terminal;
 
 import java.util.Arrays;
 import java.util.List;
@@ -6,21 +6,31 @@ import java.util.stream.Collectors;
 import org.jline.utils.AttributedCharSequence;
 import org.jline.utils.AttributedString;
 import org.jline.utils.AttributedStringBuilder;
+import org.jline.utils.Display;
 
-public class Screen implements RectLike {
-    private final AttributedStringBuilder[] lines;
+public interface Screen extends Rectangular {
+    void printAt(int x, int y, AttributedString str);
+
+    void update();
+}
+
+class ScreenImpl implements Screen {
     private final Rect rect;
+    private final Display display;
+    private final AttributedStringBuilder[] lines;
 
     @Override
     public Rect rect() {
         return rect;
     }
 
-    public Screen(int width, int height) {
+    protected ScreenImpl(Term term, int width, int height) {
         this.rect = new Rect(0, 0, width, height);
-        lines = new AttributedStringBuilder[height];
+        this.display = new Display(term.terminal, false);
+        this.display.resize(height, width);
+        this.lines = new AttributedStringBuilder[height];
         for (int i = 0; i < height; i++) {
-            lines[i] = new AttributedStringBuilder(width);
+            this.lines[i] = new AttributedStringBuilder(width);
         }
     }
 
@@ -60,9 +70,13 @@ public class Screen implements RectLike {
         }
     }
 
-    public List<AttributedString> lines() {
+    private List<AttributedString> lines() {
         return Arrays.stream(lines)
                 .map(AttributedCharSequence::toAttributedString)
                 .collect(Collectors.toList());
+    }
+
+    public void update() {
+        display.update(lines(), 0);
     }
 }
