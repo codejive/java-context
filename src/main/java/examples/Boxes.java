@@ -1,4 +1,8 @@
-package org.codejive.context;
+package examples;
+
+import static examples.Util.setBorderWidth;
+import static examples.Util.setRandomPosSize;
+import static examples.Util.setSize;
 
 import java.io.IOException;
 import java.time.Instant;
@@ -6,26 +10,23 @@ import java.util.Arrays;
 import org.codejive.context.render.BorderRenderer;
 import org.codejive.context.render.Box;
 import org.codejive.context.render.BoxRenderer;
-import org.codejive.context.styles.Property;
 import org.codejive.context.styles.Style;
-import org.codejive.context.styles.Unit;
-import org.codejive.context.styles.Value;
 import org.codejive.context.terminal.Screen;
 import org.codejive.context.terminal.Term;
 import org.codejive.context.util.ScrollBuffer;
 import org.jline.utils.AttributedString;
 import org.jline.utils.AttributedStringBuilder;
 
-public class LowLevel {
+public class Boxes {
     private final Term term;
 
-    public LowLevel(Term term) {
+    public Boxes(Term term) {
         this.term = term;
     }
 
     public static void main(String... args) throws IOException {
         try (Term terminal = Term.create()) {
-            new LowLevel(terminal).run();
+            new Boxes(terminal).run();
         }
     }
 
@@ -41,6 +42,7 @@ public class LowLevel {
         out:
         while (true) {
             if (refresh) {
+                screen.clear();
                 b1 = createColoredBox();
                 setRandomPosSize(b1, displayWidth, displayHeight);
                 b2 = createTimerBox(new Style());
@@ -110,37 +112,5 @@ public class LowLevel {
         setSize(b, 30, 5);
         setBorderWidth(b, 1);
         return b;
-    }
-
-    private static void setSize(Box b, int w, int h) {
-        Style s = b.style();
-        s.put(Property.width, Value.length(w, Unit.em));
-        s.put(Property.height, Value.length(h, Unit.em));
-    }
-
-    private static void setRandomPosSize(Box b, int totalW, int totalH) {
-        int minx = -b.width();
-        int maxx = totalW + b.width();
-        int miny = -b.height();
-        int maxy = totalH + b.height();
-        int x = (int) (Math.random() * (maxx - minx + 1) + minx);
-        int y = (int) (Math.random() * (maxy - miny + 1) + miny);
-        setPos(b, x, y);
-    }
-
-    private static void setPos(Box b, int x, int y) {
-        int w = b.width();
-        int h = b.height();
-        Style s = b.style();
-        s.put(Property.top, Value.length(y, Unit.em));
-        s.put(Property.bottom, Value.length(y + w - 1, Unit.em));
-        s.put(Property.left, Value.length(x, Unit.em));
-        s.put(Property.right, Value.length(x + h - 1, Unit.em));
-        s.put(Property.width, Value.length(w, Unit.em));
-        s.put(Property.height, Value.length(h, Unit.em));
-    }
-
-    private static void setBorderWidth(Box b, int w) {
-        b.style().put(Property.border_width, Value.length(w, Unit.em));
     }
 }

@@ -1,4 +1,7 @@
-package org.codejive.context;
+package examples;
+
+import static examples.Util.pos;
+import static examples.Util.size;
 
 import java.io.IOException;
 import java.util.List;
@@ -8,21 +11,19 @@ import org.codejive.context.ciml.dom.ScreenElement;
 import org.codejive.context.ciml.layout.DomLayouter;
 import org.codejive.context.render.Box;
 import org.codejive.context.render.BoxRenderer;
-import org.codejive.context.styles.Property;
-import org.codejive.context.styles.Style;
 import org.codejive.context.terminal.Screen;
 import org.codejive.context.terminal.Term;
 
-public class DomLevel {
+public class SimpleDom {
     private final Term term;
 
-    public DomLevel(Term term) {
+    public SimpleDom(Term term) {
         this.term = term;
     }
 
     public static void main(String... args) throws IOException {
         try (Term terminal = Term.create()) {
-            new LowLevel(terminal).run();
+            new SimpleDom(terminal).run();
         }
     }
 
@@ -45,19 +46,5 @@ public class DomLevel {
         int c = term.input().readChar();
 
         return 0;
-    }
-
-    private Style pos(int x, int y) {
-        Style s = new Style();
-        s.putAsEmInt(Property.left, x);
-        s.putAsEmInt(Property.top, y);
-        return s;
-    }
-
-    private Style size(int w, int h) {
-        Style s = new Style();
-        s.putAsEmInt(Property.width, w);
-        s.putAsEmInt(Property.height, h);
-        return s;
     }
 }
