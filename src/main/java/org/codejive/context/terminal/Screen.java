@@ -11,13 +11,15 @@ import org.jline.utils.Display;
 public interface Screen extends Rectangular {
     void printAt(int x, int y, AttributedString str);
 
+    void clear();
+
     void update();
 }
 
 class ScreenImpl implements Screen {
     private final Rect rect;
     private final Display display;
-    private final AttributedStringBuilder[] lines;
+    private AttributedStringBuilder[] lines;
 
     @Override
     public Rect rect() {
@@ -28,6 +30,13 @@ class ScreenImpl implements Screen {
         this.rect = new Rect(0, 0, width, height);
         this.display = new Display(term.terminal, false);
         this.display.resize(height, width);
+        clear();
+    }
+
+    @Override
+    public void clear() {
+        int width = rect().width();
+        int height = rect().height();
         this.lines = new AttributedStringBuilder[height];
         for (int i = 0; i < height; i++) {
             this.lines[i] = new AttributedStringBuilder(width);
