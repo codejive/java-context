@@ -5,6 +5,8 @@ public class Size {
     private final int height;
 
     public Size(int width, int height) {
+        assert width >= 0;
+        assert height >= 0;
         this.width = width;
         this.height = height;
     }
@@ -15,5 +17,10 @@ public class Size {
 
     public int height() {
         return height;
+    }
+
+    @Override
+    public String toString() {
+        return width + "x" + height;
     }
 }
