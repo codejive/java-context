@@ -3,13 +3,17 @@ package org.codejive.context.terminal;
 import java.io.Closeable;
 import java.io.Flushable;
 import java.io.IOException;
+import org.codejive.context.events.Event;
+import org.codejive.context.events.EventEmitter;
+import org.codejive.context.events.EventTarget;
 import org.jline.terminal.Attributes;
 import org.jline.terminal.Terminal;
 import org.jline.terminal.TerminalBuilder;
 import org.jline.utils.InfoCmp;
 
-public class Term implements Flushable, Closeable {
+public class Term implements Flushable, Closeable, EventTarget {
     final Terminal terminal;
+    final EventEmitter<TermResizeEvent> onResize = new EventEmitter<>();
     private final Attributes savedAttributes;
 
     public static Term create() throws IOException {
@@ -19,6 +23,7 @@ public class Term implements Flushable, Closeable {
     private Term() throws IOException {
         terminal = TerminalBuilder.builder().build();
         savedAttributes = terminal.enterRawMode();
+        terminal.handle(Terminal.Signal.WINCH, this::handleResize);
     }
 
     public Size size() {
@@ -57,5 +62,26 @@ public class Term implements Flushable, Closeable {
     public void close() throws IOException {
         terminal.setAttributes(savedAttributes);
         terminal.close();
+    }
+
+    public class TermResizeEvent implements Event {
+        private final Size size;
+
+        public TermResizeEvent(Size size) {
+            this.size = size;
+        }
+
+        public Size size() {
+            return size;
+        }
+
+        @Override
+        public EventTarget target() {
+            return Term.this;
+        }
+    }
+
+    private void handleResize(Terminal.Signal signal) {
+        onResize.dispatch(new TermResizeEvent(size()));
     }
 }
