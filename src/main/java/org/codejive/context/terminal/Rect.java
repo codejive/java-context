@@ -51,6 +51,14 @@ public class Rect extends Size {
                 Math.max(height() + topAmount + bottomAmount, 0));
     }
 
+    public Rect limited(Rect availableRect) {
+        int l = Math.max(left, availableRect.left());
+        int t = Math.max(top, availableRect.top());
+        int r = Math.min(right(), availableRect.right());
+        int b = Math.min(bottom(), availableRect.bottom());
+        return new Rect(l, t, r - l + 1, b - t + 1);
+    }
+
     @Override
     public String toString() {
         return "Rect{"
