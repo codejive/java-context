@@ -1,11 +1,10 @@
 package org.codejive.context.terminal;
 
-import java.io.Closeable;
 import java.io.Flushable;
 import java.io.IOException;
 import org.codejive.context.terminal.impl.JlineTerm;
 
-public interface Term extends Flushable, Closeable, Resizeable {
+public interface Term extends Flushable, AutoCloseable, Resizeable {
     static Term create() throws IOException {
         return new JlineTerm();
     }
