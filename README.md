@@ -51,6 +51,7 @@ The project follows a layered architecture:
 
 - **`twinkle-terminal-aesh`** - Terminal implementation using the Aesh library
 - **`twinkle-terminal-jline`** - Terminal implementation using the JLine 3 library
+- **`twinkle-terminal-miniterm`** - Terminal implementation using the java-miniterm library
 
 ### Examples
 

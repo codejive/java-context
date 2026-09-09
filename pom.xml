@@ -16,6 +16,7 @@
         <version.jspecify>1.0.0</version.jspecify>
         <version.junit>6.0.1</version.junit>
         <version.assertj>3.27.6</version.assertj>
+        <version.miniterm>0.1.6</version.miniterm>
     </properties>
 
     <modules>
@@ -26,6 +27,7 @@
         <module>twinkle-terminal</module>
         <module>twinkle-terminal-aesh</module>
         <module>twinkle-terminal-jline</module>
+        <module>twinkle-terminal-miniterm</module>
         <module>examples</module>
     </modules>
 
