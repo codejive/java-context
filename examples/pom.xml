@@ -19,7 +19,7 @@
     <dependencies>
         <dependency>
             <groupId>org.codejive.twinkle</groupId>
-            <artifactId>twinkle-terminal-aesh</artifactId>
+            <artifactId>twinkle-terminal-miniterm</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
