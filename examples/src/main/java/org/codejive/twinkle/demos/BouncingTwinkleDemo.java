@@ -1,7 +1,7 @@
 /// usr/bin/env jbang "$0" "$@" ; exit $?
 
 // spotless:off
-//DEPS org.codejive.twinkle:twinkle-terminal-aesh:1.0-SNAPSHOT
+//DEPS org.codejive.twinkle:twinkle-terminal-miniterm:1.0-SNAPSHOT
 //DEPS org.codejive.twinkle:twinkle-shapes:1.0-SNAPSHOT
 //DEPS com.github.lalyos:jfiglet:0.0.9
 // spotless:on
