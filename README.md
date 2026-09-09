@@ -57,7 +57,6 @@ The project follows a layered architecture:
 
 - **`examples`** - Example programs demonstrating Twinkle capabilities
   - `BouncingTwinkleDemo` - Animated demo with bouncing text and ASCII borders
-  - `ImageEncoderDemo` - Image rendering demonstration with automatic encoder detection
 
 ## Building
 
