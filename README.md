@@ -10,7 +10,6 @@ The project follows a layered architecture:
 - **Foundation**: Text utilities and ANSI escape code support
 - **Rendering**: Screen buffers and double-buffering for flicker-free rendering
 - **UI Components**: Drawing utilities for borders and shapes
-- **Images**: [twinkle-image](/twinkle-image/) is a completely stand-alone library for rendering images in terminals
 - **Terminal Access**: Abstraction layer with pluggable implementations
 
 ## Modules
@@ -34,13 +33,6 @@ The project follows a layered architecture:
   - Border drawing with various styles (ASCII, single-line, rounded)
   - Line and corner styles
   - Drawing utilities
-
-- **`twinkle-image`** - Terminal image encoding framework (no dependencies)
-  - **Sixel** - Legacy DEC format (xterm, mlterm)
-  - **Kitty** - Modern format (Kitty, WezTerm)
-  - **iTerm2** - Inline format (iTerm2, WezTerm)
-  - **Block** - Unicode block-based fallback rendering
-  - Pluggable encoder implementations
 
 ### Terminal Implementations
 
@@ -73,9 +65,6 @@ After building, you can run the example programs to see Twinkle in action. This 
 ```bash
 # Bouncing animation demo
 jbang bounce
-
-# Image encoder demo
-jbang image
 ```
 
 Or if you want to use regular Java commands:
@@ -83,9 +72,6 @@ Or if you want to use regular Java commands:
 ```bash
 # Bouncing animation demo
 java -jar examples/target/examples-1.0-SNAPSHOT.jar org.codejive.twinkle.examples.BouncingTwinkleDemo
-
-# Image encoder demo
-java -jar examples/target/examples-1.0-SNAPSHOT.jar org.codejive.twinkle.examples.ImageEncoderDemo
 ```
 
 ## Requirements

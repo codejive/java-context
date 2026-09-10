@@ -14,7 +14,7 @@
     <artifactId>twinkle-terminal-miniterm</artifactId>
     <packaging>jar</packaging>
 
-    <description>Terminal implementation using java-miniterm</description>
+    <description>Terminal implementation using miniterm</description>
 
     <dependencies>
         <dependency>
